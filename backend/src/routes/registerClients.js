@@ -1,9 +1,9 @@
 import express from 'express';
-import registerClientsController from '../controllers/registerClientsController.js';
+import registerClientController from '../controllers/registerClientsController.js';
 
 const router = express.Router();
 
-router.route("/".post(registerClientsController.registerClient));
-router.route("/verifyCodeEmail").post(registerClientsController.verifyCode);
+router.route("/").post(registerClientController.registerClient);
+router.route("/verifyCodeEmail").post(registerClientController.verifyEmail);
 
-export default router;
+export default router; 

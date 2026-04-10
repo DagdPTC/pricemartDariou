@@ -7,7 +7,10 @@ import brandsRoutes from "./src/routes/brands.js"
 import adminsRoutes from "./src/routes/admins.js"
 import clientsRoutes from "./src/routes/clients.js"
 import registerClientsRoutes from "./src/routes/registerClients.js"
+import registerEmployeeRoutes from "./src/routes/registerEmployees.js"
 import cookieParser from "cookie-parser"
+
+
 
 const app = express();
 
@@ -24,6 +27,7 @@ app.use("/api/brands", brandsRoutes);
 app.use("/api/admins", adminsRoutes);
 app.use("/api/clients", clientsRoutes)
 app.use("/api/registerClients", registerClientsRoutes)
+app.use("/api/registerEmployee", registerEmployeeRoutes)
 
 
 export default app;

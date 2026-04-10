@@ -1,11 +1,11 @@
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import jsonwebtoken from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
-import clientModel from "../models/clientModel.js";
+import clientModel from "../models/clients.js";
 
-import { config } from "./config.js";
+import { config } from "../config.js";
 
 //Creo un array de funciones
 const registerClientsController = {};
@@ -28,7 +28,7 @@ registerClientsController.registerClient = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcryptjs.hash(password, 10);
 
     const newClient = new clientModel({
       name,
@@ -89,7 +89,7 @@ registerClientsController.registerClient = async (req, res) => {
   }
 };
 
-registerCustmersController.verifyEmail = async (req, res) => {
+registerClientsController.verifyEmail = async (req, res) => {
   try {
     const { verificationCode } = req.body;
 
@@ -99,13 +99,13 @@ registerCustmersController.verifyEmail = async (req, res) => {
 
     const { email, verificationCode: storedCode } = decoded;
 
-    if (verificationCode === storedCode) {
+    if (verificationCode !== storedCode) {
       return res.status(400).json({ message: "Invalid code" })
     }
 
-    const customer = await customerModel.findOne({email});
-    customer.isVerified = true;
-    await customer.save();
+    const client = await clientModel.findOne({email});
+    client.isVerified = true;
+    await client.save();
 
     res.clearCookie("verificationTokenCookie")
 
@@ -117,3 +117,5 @@ registerCustmersController.verifyEmail = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export default registerClientsController;
