@@ -9,14 +9,23 @@ import clientsRoutes from "./src/routes/clients.js"
 
 import loginCustomerRoutes from "./src/routes/loginCustomer.js"
 import logoutRoutes from "./src/routes/logout.js"
+import recoveryPasswordRoutes from "./src/routes/recoveryPassword.js"
 
 import registerClientsRoutes from "./src/routes/registerClients.js"
 import registerEmployeeRoutes from "./src/routes/registerEmployees.js"
+
 import cookieParser from "cookie-parser"
+import cors from "cors";
 
 
 
 const app = express();
+
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    //permitir el envío de cookie y credenciales
+    credentials: true
+}))
 
 app.use(cookieParser());
 
@@ -34,6 +43,7 @@ app.use("/api/registerClients", registerClientsRoutes);
 app.use("/api/registerEmployee", registerEmployeeRoutes);
 app.use("/api/loginClients", loginCustomerRoutes);
 app.use("/api/logout", logoutRoutes);
+app.use("/api/recoveryPassword", recoveryPasswordRoutes);
 
 
 
