@@ -14,12 +14,16 @@ import recoveryPasswordRoutes from "./src/routes/recoveryPassword.js"
 import registerClientsRoutes from "./src/routes/registerClients.js"
 import registerEmployeeRoutes from "./src/routes/registerEmployees.js"
 
+import limiter from "./src/middlewares/rateLimiter.js";
+
 import cookieParser from "cookie-parser"
 import cors from "cors";
 
 
 
 const app = express();
+
+app.use(limiter);
 
 app.use(cors({
     origin: ["http://localhost:5173", "http://localhost:5174"],

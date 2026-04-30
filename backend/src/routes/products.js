@@ -10,6 +10,14 @@ router.route("/")
 .get(productController.getProducts)
 .post(productController.postProducts)
 
+router.route("/searchByName").post(productController.searchByName);
+
+router.route("/low-stock").post(productController.getLowStock);
+
+router.route("/price-range").post(productController.getProductsByPriceRange);
+
+router.route("/count").get(productController.countProducts);
+
 router.route("/:id")
 .put(productController.putProducts)
 .delete(productController.deleteproducts)

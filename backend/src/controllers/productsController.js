@@ -44,4 +44,84 @@ productController.putProducts = async (req, res) => {
         res.json ({message: "product updated"})
 };
 
+productController.getProductById = async (req, res) => {
+    try {
+        const product = await productsModel.findById(req.params.id)
+
+        if(!product){
+            return res.status(404).json({message: "product not found"})
+        }
+
+        return res.status(200).json({product});
+    } catch (error) {
+        console.log("error" + error);
+        return res.status(500).json({message: "Internal server error"})
+    }
+};
+
+productController.searchByName = async (req, res) => {
+    try {
+        const {name} = req.body;
+
+        const products = await productsModel.find({name: {$regex: name, $options: "i"},
+        });
+
+        if(!products){
+            return res.status(404).json({message: "product not found"})
+        }
+
+        return res.status(200).json({products});
+    } catch (error) {
+        console.log("error" + error);
+        return res.status(500).json({message: "Internal server error"})
+    }
+};
+
+// Productos con stock bajo
+productController.getLowStock = async (req, res) => {
+    try {
+        const products = await productsModel.find({stock: { $lt: 5}})
+ 
+        if(!products){
+            return res.status(404).json({message: "Not products found with low stock"})
+        }
+        return res.status(200).json(products)
+    } catch (error) {
+        console.log("error" + error);
+        return res.status(500).json({message:"Internal server error"})
+    }
+};
+
+
+//FILTROS que el usuario coloque
+productController.getProductsByPriceRange = async (req, res) => {
+    try {
+        const {min, max} = req.body
+
+        const products = await productsModel.find({
+            price: {$gte: min,  $lte: max}
+        })
+
+        if(!products){
+            return res.status(404).json({message: "product not found"})
+        }
+
+        return res.status(200).json({product});
+    } catch (error) {
+        console.log("error" + error)
+        return res.status(500).json({message: "Internal server error"})
+    }
+}
+
+productController.countProducts = async (req, res) => {
+    try {
+        const count = await productsModel.countDocuments();
+
+        return res.status(200).json(count)
+    } catch (error) {
+        console.log("error" + error)
+        return res.status(500).json({message: "Internal server error"})
+    }
+}
+
 export default productController;
